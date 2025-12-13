@@ -68,23 +68,35 @@ def add_server_time(server_url="https://hub.weirdhost.xyz/server/c7206128"):
                 print(f"正在访问登录页面: {login_url}")
                 page.goto(login_url, wait_until="domcontentloaded", timeout=90000)
 
-                # 定义选择器 (Pterodactyl 面板通用，无需修改)
-                email_selector = 'input[name="username"]' 
+                # 定义选择器
+                email_selector = 'input[name="username"]'
                 password_selector = 'input[name="password"]'
-                login_button_selector = 'button[type="submit"]'
+                # 【修改1】 改用韩文文字 "로그인" 定位按钮，解决找不到按钮的问题
+                login_button_selector = 'button:has-text("로그인")'
 
                 print("等待登录表单元素加载...")
                 page.wait_for_selector(email_selector)
                 page.wait_for_selector(password_selector)
-                page.wait_for_selector(login_button_selector)
-
+                
                 print("正在填写邮箱和密码...")
                 page.fill(email_selector, pterodactyl_email)
                 page.fill(password_selector, pterodactyl_password)
 
+                # 【修改2】 增加自动勾选用户协议的代码
+                try:
+                    print("尝试自动勾选协议框...")
+                    # 查找页面上的复选框并点击
+                    page.locator('input[type="checkbox"]').first.click(timeout=5000)
+                    time.sleep(1)
+                except Exception as e:
+                    print(f"勾选协议框跳过 (可能是已勾选或未找到): {e}")
+
                 print("正在点击登录按钮...")
+                # 确保按钮可见后再点击
+                page.locator(login_button_selector).wait_for(state='visible', timeout=30000)
+
                 with page.expect_navigation(wait_until="domcontentloaded", timeout=60000):
-                    page.click(login_button_selector)
+                    page.click(login_button_selector))
 
                 # 检查登录后是否成功
                 if "login" in page.url or "auth" in page.url:
