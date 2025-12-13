@@ -96,7 +96,7 @@ def add_server_time(server_url="https://hub.weirdhost.xyz/server/c7206128"):
                 page.locator(login_button_selector).wait_for(state='visible', timeout=30000)
 
                 with page.expect_navigation(wait_until="domcontentloaded", timeout=60000):
-                    page.click(login_button_selector))
+                    page.click(login_button_selector)
 
                 # 检查登录后是否成功
                 if "login" in page.url or "auth" in page.url:
