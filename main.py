@@ -72,7 +72,7 @@ def add_server_time(server_url="https://hub.weirdhost.xyz/server/c7206128"):
                 email_selector = 'input[name="username"]'
                 password_selector = 'input[name="password"]'
                 # 【修改1】 改用韩文文字 "로그인" 定位按钮，解决找不到按钮的问题
-                login_button_selector = 'button:has-text("로그인"):not(:has-text("Discord"))'
+                login_button_selector = 'button:has-text("로그인"):not(:has-text("디스코드"))'
 
                 print("等待登录表单元素加载...")
                 page.wait_for_selector(email_selector)
